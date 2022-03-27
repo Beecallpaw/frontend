@@ -14,8 +14,9 @@ export const Tier = ({ tier }) => {
                 <p>{tier.description}</p>
                 <Link
                     className="btn btn-lg btn-block btn-primary"
-                    to={`/checkout`}
+                    to={ {pathname: `/checkout?price=${tier.price}`, state: {price: 123}}}
                     role="button"
+                    price="123"
                 >
                     View details
                 </Link>

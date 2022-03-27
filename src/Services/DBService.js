@@ -9,6 +9,9 @@ class DBService {
         return http.get(`/services/${slug}`)
     }
 
+    checkout(data) {
+        return http.post("/checkout", data)
+    }
 }
 
 export default new DBService();
