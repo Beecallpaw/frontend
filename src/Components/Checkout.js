@@ -4,8 +4,6 @@ import DBService from "../Services/DBService";
 export default class Checkout extends React.Component { 
     constructor(props) {
         super(props);
-        console.log(window.location)
-        console.log(props)
         this.state = {
             firstname: '',
             lastname: '',
@@ -15,7 +13,7 @@ export default class Checkout extends React.Component {
             state: '',
             zip:'',
             payment:'',
-            errors: {},
+            submitted: false,
         };
         this.handleInput = this.handleInput.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -31,18 +29,20 @@ export default class Checkout extends React.Component {
         e.preventDefault();
         const data = this.state;
         const response = await DBService.checkout(data)
-
+        if(response.status === 200 && response.data.success === true){
+            this.setState({submitted : true});
+        }
     };
 
     getPrice(){
         const params = new URLSearchParams(window.location.search)
-        console.log(params)
         if(params.get("price")){
             return params.get("price")
         } 
         return 0
     }    
     render() {
+        let {submitted} = this.state
         return (
             <div className="container">
                 <div className="py-5 text-center mt-3">
@@ -54,11 +54,11 @@ export default class Checkout extends React.Component {
                         without completing it.
                     </p>
                 </div>
-              {/* {submitting && (
-                    <div class="alert alert-success" role="alert">
-                        A simple success alert—check it out!
+              {submitted && (
+                    <div className="alert alert-success" role="alert">
+                        Data Successfully submitted
                     </div>
-                )} */}
+                )}
                 <div className="row">
                     <div className="col-md-4 order-md-2 mb-4">
                         <h4 className="d-flex justify-content-between align-items-center mb-3">
